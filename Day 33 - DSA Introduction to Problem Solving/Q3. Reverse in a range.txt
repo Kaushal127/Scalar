@@ -1,0 +1,45 @@
+Q : Given an array A of N integers. Also given are two integers B and C. Reverse the array A in the given range [B, C]
+
+Example Input
+Input 1:
+
+A = [1, 2, 3, 4]
+B = 2
+C = 3
+Input 2:
+
+A = [2, 5, 6]
+B = 0
+C = 2
+
+
+Example Output
+Output 1:
+
+[1, 2, 4, 3]
+Output 2:
+
+[6, 5, 2]
+
+
+Example Explanation
+Explanation 1:
+
+We reverse the subarray [3, 4].
+Explanation 2:
+
+We reverse the entire array [2, 5, 6].
+
+public class Solution {
+    public int[] solve(int[] A, int B, int C) {
+        int n = A.length ;
+        while (B<C){
+            int temp = A[B] ;
+            A[B] = A[C];
+            A[C] = temp ;
+            B++;
+            C--;
+        }
+        return A ; 
+    }
+}
