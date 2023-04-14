@@ -1,0 +1,99 @@
+Problem Description
+Given an matrix A of size NxM, which is row-wise and column-wise sorted. Find a submatrix such that sum of its elements is maximum and return this sum.
+
+
+Problem Constraints
+1 <= N, M <= 103
+-105 <= A[i][j] <= 105
+
+
+Input Format
+First argument A is an matrix of integers.
+
+
+Output Format
+Return an integer value which is maximum submatrix sum
+
+
+Example Input
+Input 1:
+
+A = [[6, 8, 10, 11],
+[10, 11, 12, 15]]
+Input 2:
+
+A = [[-8, 1, 1],
+[-1, 6, 6],
+[7, 10, 10]]
+
+
+Example Output
+Output 1:
+
+83
+Output 2:
+
+38
+
+
+Example Explanation
+Explanation 1:
+
+Since all values in the matrix are positive integers, their sum is taken which is 83.
+Explanation 2:
+
+Max sum is found in submatrix from [1, 0] to [2, 2].
+
+public class Solution {
+    public long solve(int[][] A) {
+        int N = A.length ;
+        int M = A[0].length ;
+        long[][] PS = prefixsum2D(A) ;
+        int x2 = N-1 ;
+        int y2 = M-1 ;
+        long ans = Long.MIN_VALUE ;
+         for (int i=0 ; i<N ; i++){
+             for (int j=0 ; j<M ; j++){
+                 int x1 = i ;
+                 int y1 = j ;
+                long sum = 0 ;
+                sum += PS[x2][y2] ;
+                if (x1>0){
+                    sum -= PS[x1-1][y2] ;
+                }
+                if (y1>0){
+                    sum -= PS[x2][y1-1] ;
+                } 
+                if(x1>0 && y1>0){
+                    sum += PS[x1-1][y1-1] ;
+                }
+                if(sum > ans){
+                    ans = sum ;
+                }
+             }
+         } 
+         return ans ;
+     }
+     
+        long [][] prefixsum2D (int[][] A){
+            int N = A.length ; 
+            int M = A[0].length ;
+            long[][] PS =new long[N][M] ;
+           // int modulus = 1000000007;
+             for (int i=0 ; i<N ; i++){
+                for (int j=0 ; j<M ; j++){
+                    if(j==0){
+                        PS[i][j] = A[i][j] ;
+                    } else {
+                        PS[i][j] = PS[i][j-1] + A[i][j] ;
+                    }
+                }
+            }
+            for (int j=0 ; j<M ; j++ ){
+                for (int i=1 ; i<N ; i++){
+                    PS[i][j] = PS[i-1][j] + PS[i][j] ;
+                }
+            }
+            return PS ;
+        }
+}
