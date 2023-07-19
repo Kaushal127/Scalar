@@ -1,0 +1,85 @@
+Problem Description
+Given an integer array A, sort the array using Merge Sort.
+
+
+Problem Constraints
+1 <= |A| <= 105
+1 <= A[i] <= 109
+
+
+Input Format
+First argument is an integer array A.
+
+
+Output Format
+Return the sorted array.
+
+
+Example Input
+Input 1:-
+A = [1, 4, 10, 2, 1, 5]
+Input 2:-
+A = [3, 7, 1]
+
+
+Example Output
+Output 1:-
+[1, 1, 2, 4, 5, 10]
+Output 2:-
+[1, 3, 7]
+
+
+Example Explanation
+Explanation 1 and 2:
+Return the sorted array.
+
+Solution 
+
+public class Solution {
+    public int[] solve(int[] A) {
+            int N = A.length ;
+            int [] ans = mergeSort(A,0,N-1) ;
+            return ans ;
+    }
+    public int[] mergeSort(int[]Arr , int lo , int hi){
+        int N = Arr.length ;
+        if (lo==hi){
+            int[] sa = new int[1] ;
+            sa[0] = Arr[lo] ;
+            return sa ;
+        }
+        int mid = (lo+hi)/2 ;
+        int[] x = mergeSort (Arr,lo,mid) ;
+        int[] y = mergeSort (Arr,mid+1,hi) ;
+        int[] ans = mergeArray(x,y) ;
+        return ans ;
+
+    }
+
+     public int[] mergeArray(final int[] A, final int[] B) {
+       int N = A.length ;
+       int M = B.length ;
+       int[] ans = new int[N+M] ;
+         int i=0 , j=0 , k=0 ;
+           while (i<N && j<M) {
+               if (A[i]<B[j]){
+                   ans[k] = A[i] ;
+                   i++;
+                   k++ ;
+               } else {
+                   ans[k] = B[j] ;
+                   j++ ;
+                   k++ ;
+               }
+           }
+           while (i<N){
+               ans[k] = A[i] ;
+               i++;k++;
+           }
+           while (j<M){
+               ans[k] = B[j] ;
+               j++ ; k++ ;
+           }
+         return ans ;  
+    }
+}

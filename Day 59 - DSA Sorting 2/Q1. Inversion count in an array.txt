@@ -1,0 +1,104 @@
+Problem Description
+Given an array of integers A. If i < j and A[i] > A[j], then the pair (i, j) is called an inversion of A. Find the total number of inversions of A modulo (109 + 7).
+
+
+
+Problem Constraints
+1 <= length of the array <= 105
+
+1 <= A[i] <= 109
+
+
+
+Input Format
+The only argument given is the integer array A.
+
+
+
+Output Format
+Return the number of inversions of A modulo (109 + 7).
+
+
+
+Example Input
+Input 1:
+
+A = [1, 3, 2]
+Input 2:
+
+A = [3, 4, 1, 2]
+
+
+Example Output
+Output 1:
+
+1
+Output 2:
+
+4
+
+
+Example Explanation
+Explanation 1:
+
+The pair (1, 2) is an inversion as 1 < 2 and A[1] > A[2]
+Explanation 2:
+
+The pair (0, 2) is an inversion as 0 < 2 and A[0] > A[2]
+The pair (0, 3) is an inversion as 0 < 3 and A[0] > A[3]
+The pair (1, 2) is an inversion as 1 < 2 and A[1] > A[2]
+The pair (1, 3) is an inversion as 1 < 3 and A[1] > A[3]
+
+Solution
+
+public class Solution {
+    int count = 0;
+      int mod=1000000007;
+    public int solve(int[] A) {
+            int N = A.length ;
+            int [] ans = mergeSort(A,0,N-1) ;
+            return count % mod ;
+    }
+    public int[] mergeSort(int[]Arr , int lo , int hi){
+        int N = Arr.length ;
+        if (lo==hi){
+            int[] sa = new int[1] ;
+            sa[0] = Arr[lo] ;
+            return sa ;
+        }
+        int mid = (lo+hi)/2 ;
+        int[] x = mergeSort (Arr,lo,mid) ;
+        int[] y = mergeSort (Arr,mid+1,hi) ;
+        int[] ans = mergeArray(x,y) ;
+        return ans ;
+
+    }
+
+     public int[] mergeArray(final int[] A, final int[] B) {
+       int N = A.length ;
+       int M = B.length ;
+       int[] ans = new int[N+M] ;
+         int i=0 , j=0 , k=0 ;
+           while (i<N && j<M) {
+               if (A[i]<=B[j]){
+                   ans[k] = A[i] ;
+                   i++;
+                   k++ ;
+               } else {
+                   count = (count % mod) + (N-i)% mod;
+                   ans[k] = B[j] ;
+                   j++ ;
+                   k++ ;
+               }
+           }
+           while (i<N){
+               ans[k] = A[i] ;
+               i++;k++;
+           }
+           while (j<M){
+               ans[k] = B[j] ;
+               j++ ; k++ ;
+           }
+         return ans  ;  
+    }
+}
