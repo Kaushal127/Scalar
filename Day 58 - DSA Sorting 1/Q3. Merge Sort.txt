@@ -33,7 +33,6 @@ Example Explanation
 Explanation 1 and 2:
 Return the sorted array.
 
-Solution 
 
 public class Solution {
     public int[] solve(int[] A) {
