@@ -1,0 +1,107 @@
+Problem Description
+Given string A denoting an infix expression. Convert the infix expression into a postfix expression.
+
+String A consists of ^, /, *, +, -, (, ) and lowercase English alphabets where lowercase English alphabets are operands and ^, /, *, +, - are operators.
+
+Find and return the postfix expression of A.
+
+NOTE:
+
+^ has the highest precedence.
+/ and * have equal precedence but greater than + and -.
++ and - have equal precedence and lowest precedence among given operators.
+
+
+Problem Constraints
+1 <= length of the string <= 500000
+
+
+
+Input Format
+The only argument given is string A.
+
+
+
+Output Format
+Return a string denoting the postfix conversion of A.
+
+
+
+Example Input
+Input 1:
+
+ A = "x^y/(a*z)+b"
+Input 2:
+
+ A = "a+b*(c^d-e)^(f+g*h)-i"
+
+
+Example Output
+Output 1:
+
+ "xy^az*/b+"
+Output 2:
+
+ "abcd^e-fgh*+^*+i-"
+
+
+Example Explanation
+Explanation 1:
+
+ Ouput dentotes the postfix expression of the given input.
+
+
+
+public class Solution {
+    public String solve(String A) {
+        Stack<String> operand = new Stack<>() ;
+        Stack<Character> operator = new Stack<>() ;
+         
+           for (int i=0 ; i<A.length() ; i++ ){
+               char ch = A.charAt(i);
+                if (ch>='a' && ch<='z') {
+                    operand.push(ch+"") ;
+                }  else if (ch=='(') {
+                    operator.push(ch) ;
+                } else if (ch==')') {
+                    while (operator.peek()!='(') {
+                        String v2 = operand.pop() ;
+                        String v1 = operand.pop() ;
+                        char opr = operator.pop() ;
+                        String res = v1 + v2 + opr ;
+                        operand.push(res) ; 
+                    }
+                    operator.pop() ;
+                } else if(ch=='^' || ch=='+' ||ch=='-' ||ch=='*' ||ch=='/' ) {
+                    while (operator.size()!=0 && operator.peek() != '(' && priority(operator.peek())>=priority(ch)) {
+                        String v2 = operand.pop() ;
+                        String v1 = operand.pop() ;
+                        char opr = operator.pop() ;
+                        String res = v1 + v2 + opr ;
+                        operand.push(res) ; 
+                    }
+                    operator.push(ch) ;
+                }
+           }    
+                while (operator.size()>0){
+                     String v2 = operand.pop() ;
+                     String v1 = operand.pop() ;
+                     char opr = operator.pop() ;
+                     String res = v1 + v2 + opr ;
+                     operand.push(res) ; 
+                }
+                return operand.peek() ;
+           
+    }
+    static int priority(char opr) {
+        if(opr == '^')    {
+            return 3;
+        }
+        else if(opr == '*' || opr == '/') {
+            return 2;
+        }
+        else {
+            return 1;
+        }
+    }
+}
